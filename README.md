@@ -16,4 +16,4 @@ This repository contains the frontend. It is not connected to a backend or datab
 Future Improvements:
 Connect the interface to a backend and database.
 
-Add features such as user accounts or persistent book records.
+Add features such as user accounts or persistent book records
