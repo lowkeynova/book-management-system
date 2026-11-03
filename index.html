@@ -1,0 +1,280 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BookNest – Bookstore Management System</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark">BN</div>
+    <div>
+      <h1>BookNest</h1>
+      <p>Smart Inventory &amp; Sales</p>
+    </div>
+  </div>
+  <nav class="nav" id="nav">
+    <button class="nav-item active" data-section="dashboard"><span class="ico">▦</span> Dashboard</button>
+    <button class="nav-item" data-section="books"><span class="ico">▤</span> Books</button>
+    <button class="nav-item" data-section="inventory"><span class="ico">▣</span> Inventory</button>
+    <button class="nav-item" data-section="customers"><span class="ico">☺</span> Customers</button>
+    <button class="nav-item" data-section="newsale"><span class="ico">＋</span> New Sale</button>
+    <button class="nav-item" data-section="sales"><span class="ico">≡</span> Sales History</button>
+    <button class="nav-item" data-section="reports"><span class="ico">◴</span> Reports</button>
+    <button class="nav-item" data-section="advisor"><span class="ico">✦</span> Smart Stock Advisor</button>
+  </nav>
+  <div class="sidebar-foot">
+    <button class="btn ghost block" id="btnAbout">About System</button>
+    <button class="btn danger-ghost block" id="btnReset">Reset Demo Data</button>
+  </div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<!-- ============ MAIN ============ -->
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+    <div>
+      <h2 id="pageTitle">Dashboard</h2>
+      <p class="muted small" id="pageSub">Overview of your bookstore</p>
+    </div>
+    <div class="topbar-right">
+      <span class="pill" id="alertPill" title="Low stock items">⚠ 0 low stock</span>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="section active" id="section-dashboard">
+      <div class="stats" id="statCards"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <h3>Sales Overview <span class="muted small">(last 7 days)</span></h3>
+          </div>
+          <div class="chart" id="chart"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Low Stock Alert</h3></div>
+          <p class="muted small" id="lowStockMsg">All books are well stocked.</p>
+          <ul class="alert-list" id="lowStockList"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Quick Actions</h3>
+        </div>
+        <div class="row gap">
+          <button class="btn primary" data-quick="book">＋ Add Book</button>
+          <button class="btn" data-quick="customer">＋ Add Customer</button>
+          <button class="btn" data-quick="sale">🧾 New Sale</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Recent Sales</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Invoice ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th></tr></thead>
+            <tbody id="recentSales"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BOOKS ===== -->
+    <section class="section" id="section-books">
+      <div class="card">
+        <div class="card-head">
+          <h3>Book Catalogue</h3>
+          <button class="btn primary" id="btnAddBook">＋ Add Book</button>
+        </div>
+        <div class="filters">
+          <input type="search" id="bookSearch" placeholder="Search title, author, ISBN…" />
+          <select id="bookCategory"><option value="">All categories</option></select>
+          <select id="bookStatus">
+            <option value="">All statuses</option>
+            <option>In Stock</option><option>Low Stock</option><option>Out of Stock</option>
+          </select>
+          <select id="bookSort">
+            <option value="id">Sort: Book ID</option>
+            <option value="title">Sort: Title (A–Z)</option>
+            <option value="price">Sort: Price (high→low)</option>
+            <option value="stock">Sort: Stock (low→high)</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Book ID</th><th>Title</th><th>Author</th><th>Category</th><th>ISBN</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="booksBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INVENTORY ===== -->
+    <section class="section" id="section-inventory">
+      <div class="stats" id="invStats"></div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Stock Levels</h3>
+          <input type="search" id="invSearch" placeholder="Search books…" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Book</th><th>Current Stock</th><th>Minimum</th><th>Status</th><th>Last Updated</th><th>Actions</th></tr></thead>
+            <tbody id="invBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CUSTOMERS ===== -->
+    <section class="section" id="section-customers">
+      <div class="card">
+        <div class="card-head">
+          <h3>Customers</h3>
+          <button class="btn primary" id="btnAddCustomer">＋ Add Customer</button>
+        </div>
+        <div class="filters">
+          <input type="search" id="custSearch" placeholder="Search name, phone, email…" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Customer ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Purchases</th><th>Total Spent</th><th>Actions</th></tr></thead>
+            <tbody id="custBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEW SALE ===== -->
+    <section class="section" id="section-newsale">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>1. Customer</h3></div>
+          <label class="field">
+            <span>Select customer</span>
+            <select id="saleCustomer"></select>
+          </label>
+
+          <div class="card-head mt"><h3>2. Add Books</h3></div>
+          <input type="search" id="saleBookSearch" placeholder="Search a book to sell…" />
+          <div id="saleBookList" class="picker"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>3. Cart</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Book</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr></thead>
+              <tbody id="cartBody"></tbody>
+            </table>
+          </div>
+          <label class="field">
+            <span>Discount (%)</span>
+            <input type="number" id="discount" value="0" min="0" max="100" step="1" />
+            <small class="err" id="err-discount"></small>
+          </label>
+          <label class="field">
+            <span>Payment method</span>
+            <select id="payment"><option>Cash</option><option>UPI</option><option>Card</option></select>
+          </label>
+          <div class="totals">
+            <div><span>Subtotal</span><b id="tSub">₹0.00</b></div>
+            <div><span>Discount</span><b id="tDisc">−₹0.00</b></div>
+            <div class="grand"><span>Grand Total</span><b id="tTotal">₹0.00</b></div>
+          </div>
+          <button class="btn primary block" id="btnCompleteSale">Complete Sale</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SALES HISTORY ===== -->
+    <section class="section" id="section-sales">
+      <div class="card">
+        <div class="card-head"><h3>Sales History</h3></div>
+        <div class="filters">
+          <input type="search" id="salesSearch" placeholder="Search invoice or customer…" />
+          <input type="date" id="salesDate" />
+          <select id="salesPayment"><option value="">All payments</option><option>Cash</option><option>UPI</option><option>Card</option></select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Invoice ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Subtotal</th><th>Discount</th><th>Total</th><th>Payment</th><th>Actions</th></tr></thead>
+            <tbody id="salesBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== REPORTS ===== -->
+    <section class="section" id="section-reports">
+      <div class="stats" id="reportStats"></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Category Performance</h3></div>
+          <div id="catPerf" class="bars"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Best-Selling Books</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Rank</th><th>Book</th><th>Qty Sold</th><th>Revenue</th></tr></thead>
+              <tbody id="bestBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ADVISOR ===== -->
+    <section class="section" id="section-advisor">
+      <div class="stats" id="advStats"></div>
+      <div class="card">
+        <div class="card-head"><h3>Restocking Recommendations</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Book</th><th>Stock</th><th>Min</th><th>Total Sold</th><th>Recent (30d)</th><th>Sales Rate/day</th><th>Health Score</th><th>Recommendation</th></tr></thead>
+            <tbody id="advBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>How Smart Stock Advisor Works</h3></div>
+        <p class="muted">
+          The advisor combines three things you already track — <b>current inventory level</b>,
+          <b>minimum stock level</b> and <b>sales history</b> — and applies simple rules to suggest what
+          to reorder. Books that sell fast but sit near their minimum level are flagged first.
+          The health score (0–100) blends stock cover against the minimum level with how quickly the
+          book has been selling in the last 30 days.
+          This is a rule-based inventory recommendation feature, not machine learning or AI.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle">Title</h3>
+      <button class="icon-btn" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
